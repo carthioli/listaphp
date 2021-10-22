@@ -24,109 +24,147 @@ if( $_POST ){
 
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/style.css">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script1.js"></script>
 
-    <title>Cadastros</title>
-    </head>
-    <body>
+  <title>Cadastros</title>
+</head>
+<body>
 
-    <header>
-    <div class="center">
+<header>
+  <div class="center">
     <h1>CADASTRO</h1>
-    </div>
-    <div class="pesquisar">
+  </div>
+  <div class="pesquisar">
     <form method="POST" action="index.php">
-    <input class="inppesquisar" name="pesquisar" type="text">
-    <input class="btnpesquisar" type="image" src="img/pesquisa.png" width="15px">
+      <input class="inppesquisar" name="pesquisar" type="text">
+      <input class="btnpesquisar" type="image" src="img/pesquisa.png" width="15px">
     </form>
-    </div>
-  </header>
-  <main>
-    <div class="card">
-    <?php include "formulario.php";?>      
-    </div>  
-
-    <?php
-
-    if ( array_key_exists( 'pesquisar' ,  $_POST ) ) {
-      
-      $lista = null;
-      
-      if( isset( $_SESSION['lista'] ) ){
-        $lista = $_SESSION['lista'];
+  </div>
+</header>
+<main>
+  <div class="card">
+    <form method="POST" action="cadastro.php">
+      <script src="js/script1.js"></script>
+      <?php
+      if( array_key_exists('id' , $pessoa) ){
+        ?>
+        <input type="hidden" name="id" value="<?php echo $pessoa['id'];?>">
+        <?php
       }
-      
-      $pesquisar = $_POST['pesquisar'];
-      
-      if ( ! empty( $pesquisar ) ) {
+      ?>
+
+      <div class="lineinput">
+        <label>NOME:</label>
+        <input type="text" id="nome" name="nome" value="<?php echo $pessoa['nome'];?>">
+      </div>
+      <div class="lineinput">
+        <label>SOBRENOME:</label>
+        <input type="text" name="sobrenome" value="<?php echo $pessoa['sobrenome'];?>">
+      </div>
+      <div class="lineinput">
+        <label>APELIDO:</label>
+        <input type="text" name="apelido" value="<?php echo $pessoa['apelido'];?>">
+      </div>
+      <div class="lineinput">
+        <label>TELEFONE:</label>
+        <input type="number" name="telefone" placeholder="(XX) XXXX-XXXX" value="<?php echo $pessoa['telefone'];?>">
+      </div>
+      <div class="lineinput">
+        <label>CIDADE:</label>
+        <input type="text" name="cidade" value="<?php echo $pessoa['cidade'];?>">
+      </div>
+      <div class="lineinput">
+        <label>ESTADO:</label>
+        <input type="text" name="estado" value="<?php echo $pessoa['estado'];?>">
+      </div>
+      <div class="botaoform">
+        <input class="button" onclick="cadastro.salvar()" type="submit" name="salvar" value="SALVAR">
+        <input class="button" type="submit" name="cancelar" value="CANCELAR">
+        <input class="button" type="submit" name="limpar" value="LIMPAR CADASTROS">  
+        <a class="button" href="index.php">VOLTAR</a>    
+      </div>
+    </form> 
+  </div>  
+
+  <?php
+  if ( array_key_exists( 'pesquisar' ,  $_POST ) ) {
         
-        $id_encontrado = null;
-        echo "<pre>";
-        foreach( $lista as $posicao => $p ){
-          
-          if( $pesquisar === $p['nome'] ){
-            $id_encontrado = $posicao;
-            break;
-          }
-          
+    $lista = null;
+    
+    if( isset( $_SESSION['lista'] ) ){
+      $lista = $_SESSION['lista'];
+    }
+    
+    $pesquisar = $_POST['pesquisar'];
+    
+    if ( ! empty( $pesquisar ) ) {
+      
+      $id_encontrado = null;
+      echo "<pre>";
+      foreach( $lista as $posicao => $p ){
+        
+        if( $pesquisar === $p['nome'] ){
+          $id_encontrado = $posicao;
+          break;
         }
         
-        $pessoa = $_SESSION['lista'][$id_encontrado];
-        $pessoa['id'] = $id_encontrado;
-        
-      } 
-      
-      ?>
-      <link rel="stylesheet" href="css/style.css">
-      <div class="tabela">
-      <table border="1">
-      <thead>
-      <th class="center">ID</th>
-      <th>NOME</th>
-      <th>SOBRENOME</th>
-      <th>APELIDO</th>
-      <th>TELEFONE</th>
-      <th>CIDADE</th>
-      <th>ESTADO</th>
-      <th class="center">AÇÕES</th>
-      </thead>
-      <tbody id="tbody">
-      <tr>
-      <td><?php echo $pessoa['id']+1;?></td>
-      <td><?php echo $pessoa['nome'];?></td>
-      <td><?php echo $pessoa['sobrenome'];?></td>
-      <td><?php echo $pessoa['apelido'];?></td>
-      <td><?php echo $pessoa['telefone'] ;?></td>
-      <td><?php echo $pessoa['cidade'];?></td>
-      <td><?php echo $pessoa['estado'];?></td>
-      <td>
-      <form method="POST" action="index.php">
-      <input type="hidden" name="id" value="<?php echo $pessoa['id'];?>"/>
-      <input class="botao" name="editar" type="image" src="img/editar.png" width="20px">
-      </form>  
-      
-      </td>
-      </tr>  
-      </tbody>
-      </table>
-      </div>
-      
-      <?php
-    }
-    else{
-      
-      if( isset( $_SESSION['lista'] ) ){
-        $lista = $_SESSION['lista'];
       }
       
-      ?>
+      $pessoa = $_SESSION['lista'][$id_encontrado];
+      $pessoa['id'] = $id_encontrado;
       
-      
-      <div class="tabela">
+    } 
+    
+    ?>
+    <link rel="stylesheet" href="css/style.css">
+    <div class="tabela">
       <table border="1">
-      <thead>
+        <thead>
+          <th class="center">ID</th>
+          <th>NOME</th>
+          <th>SOBRENOME</th>
+          <th>APELIDO</th>
+          <th>TELEFONE</th>
+          <th>CIDADE</th>
+          <th>ESTADO</th>
+          <th class="center">AÇÕES</th>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td><?php echo $pessoa['id']+1;?></td>
+            <td><?php echo $pessoa['nome'];?></td>
+            <td><?php echo $pessoa['sobrenome'];?></td>
+            <td><?php echo $pessoa['apelido'];?></td>
+            <td><?php echo $pessoa['telefone'] ;?></td>
+            <td><?php echo $pessoa['cidade'];?></td>
+            <td><?php echo $pessoa['estado'];?></td>
+            <td>
+              <form method="POST" action="index.php">
+                <input type="hidden" name="id" value="<?php echo $pessoa['id'];?>"/>
+                <input class="botao" name="editar" type="image" src="img/editar.png" width="20px">
+              </form>  
+            </td>
+          </tr>  
+        </tbody>
+      </table>
+    </div>
+    
+    <?php
+  }
+  else{
+
+    if( isset( $_SESSION['lista'] ) ){
+      $lista = $_SESSION['lista'];
+  }
+
+  ?>
+
+  <div class="tabela">
+  <table border="1">
+    <thead>
       <th class="center">ID</th>
       <th>NOME</th>
       <th>SOBRENOME</th>
@@ -135,17 +173,17 @@ if( $_POST ){
       <th>CIDADE</th>
       <th>ESTADO</th>
       <th class="center">AÇÕES</th>
-      </thead>
-      <tbody id="tbody">
-      
-      <?php
-      
-      // verifica se a lista NAO esta VAZIA
-      if( ! is_null( $lista ) ){
-        foreach ( $lista as $id => $pessoa ){
-          
-          ?>
-          <tr>
+    </thead>
+    <tbody id="tbody">
+    <?php
+
+    // verifica se a lista NAO esta VAZIA
+
+    if( array_key_exists( 'lista', $_SESSION ) ){
+      foreach ( $lista as $id => $pessoa ){
+        
+        ?>
+        <tr>
           <td><?php echo $id+1;?></td>
           <td><?php echo $pessoa['nome'];?></td>
           <td><?php echo $pessoa['sobrenome'];?></td>
@@ -154,37 +192,32 @@ if( $_POST ){
           <td><?php echo $pessoa['cidade'];?></td>
           <td><?php echo $pessoa['estado'];?></td>
           <td>
-          <form method="POST" action="index.php">
-          <input type="hidden" name="id" value="<?php echo $id;?>"/>
-          <input class="botao1" name="editar" type="image" src="img/editar.png" width="20px">
-          </form>  
-          <form method="POST" action="cadastro.php">
-          <input type="hidden" name="id_excluir" value="<?php echo $id;?>"/>
-          <input class="botao1" name="excluir" type="image" src="img/excluir.png" width="20px">
-          </form>
+            <form method="POST" action="index.php">
+              <input type="hidden" name="id" value="<?php echo $id;?>"/>
+              <input class="botao1" name="editar" type="image" src="img/editar.png" width="20px">
+            </form>  
+            <form method="POST" action="cadastro.php">
+              <input type="hidden" name="id_excluir" value="<?php echo $id;?>"/>
+              <input class="botao1" name="excluir" onclick="salvar()" type="image" src="img/excluir.png" width="20px">
+            </form>
           </td>
-          
-          </tr>  
-          <?php
-          
-          // http://localhost:8081/listaphp/excluir.php?id=0
-          
-        }
-      }
-      // a lista esta vazia
-      else{
-        ?>
-        <tr>
-        <td colspan="7">Nenhum cadastro... ;( </td>
-        </tr>        
-        <?php
+        </tr>  
+    <?php
       }
     }
+    else{
+    ?>
+      <tr>
+        <td colspan="7">Nenhum cadastro... ;( </td>
+      </tr>        
+    <?php
+        }
+  }
     ?>
     </tbody>
-    </table>
-    </div>
+  </table>
+  </div>
 
-    </main>      
-  </body>
+</main>      
+</body>
 </html>
